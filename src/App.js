@@ -8,20 +8,20 @@ export default function App() {
 Tone.Transport.bpm.value = 20;
 
 // Effects
-const pingPong = new Tone.PingPongDelay("16n", .03).toDestination();
-const reverb = new Tone.Freeverb(.5, .5, 0.101).toDestination();
+const pingPong = new Tone.PingPongDelay("64n", .03).toDestination();
+const reverb = new Tone.Freeverb(.9, .5, 0.5).toDestination();
 const tremolo = new Tone.Tremolo(9, 0.02).toDestination().start(1);
 const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
 
 
 // Synth Sound 1
   const synth = new Tone.MonoSynth({
-    volume: -18,
+    volume: -25,
     oscillator: {
       type: 'sine'
     },
     envelope: {
-      attack: .5,
+      attack: .9,
       decay: 1,
       sustain: 0.5,
       release: 10
@@ -41,7 +41,7 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
   const synthTwo = new Tone.PolySynth({
     volume: -20,
     oscillator: {
-      type: 'triangle'
+      type: 'square'
     },
     envelope: {
       attack: .9,
@@ -62,7 +62,7 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
 
   // Synth Sound 3
   const synthThree = new Tone.PolySynth({
-    "volume": -40,
+    "volume": -45,
     "detune": 10,
     "portamento": 10,
     "envelope": {
@@ -182,7 +182,69 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
       "phase": 29.999999999999996,
       "type": "triangle101"
     }
-  }).chain(pingPong, chorus).toDestination();
+  }).chain(pingPong, chorus, reverb).toDestination();
+
+// Synth Sound 4
+const synthFour = new Tone.AMSynth({
+	"volume": -20,
+	"detune": 20,
+	"portamento": 0,
+	"harmonicity": 1,
+	"oscillator": {
+		"partialCount": 0,
+		"partials": [],
+		"phase": 0,
+		"type": "sine"
+	},
+	"envelope": {
+		"attack": 0.5,
+		"attackCurve": "linear",
+		"decay": 0.2,
+		"decayCurve": "exponential",
+		"release": 1,
+		"releaseCurve": "exponential",
+		"sustain": 0.2
+	},
+	"modulation": {
+		"partialCount": 0,
+		"partials": [],
+		"phase": 10,
+		"type": "square"
+	},
+	"modulationEnvelope": {
+		"attack": 0.5,
+		"attackCurve": "linear",
+		"decay": 0.01,
+		"decayCurve": "exponential",
+		"release": 0.5,
+		"releaseCurve": "exponential",
+		"sustain": 1
+	}
+}).chain(chorus).toDestination();
+
+// Synth Sound 5
+const synthFive = new Tone.MonoSynth({
+  volume: -50,
+  oscillator: {
+    type: 'sawtooth'
+  },
+  envelope: {
+    attack: .9,
+    decay: 1,
+    sustain: 0.5,
+    release: 10
+  },
+  filterEnvelope: {
+    attack: 0.06,
+    decay: 0.2,
+    sustain: 0.5,
+    release: 2,
+    baseFrequency: 200,
+    octaves: 7,
+    exponent: 1.2
+  }
+}).chain(tremolo, pingPong, reverb).toDestination();
+
 
 // Pattern 1
 var  pattern = new Tone.Pattern(function(time, note){
@@ -214,29 +276,55 @@ var  patternTwo = new Tone.Pattern(function(time, note){
 
 
 // Pattern 3
-var  patternThree = new Tone.Pattern(function(time, note){
+var  patternThree = new Tone.Sequence(function(time, note){
   synthThree.triggerAttackRelease(note, "128n");
     }, [
+      "C7", "B6", "G6", "F6",
+      ["C7", "B6", "G6", "F6"],
       "C6", "B5", "G5", "F5",
-      "C6", "B5", "G5", "F5",
-      "C6", "B5", "G5", "F5",
-      "C6", "B5", "G5", "F5",
+      "C7", ["B6", "G6"], "F6",
       "G5", "F5", "D5", "C5",
-      "G5", "F5", "D5", "C5",
-      "G5", "F5", "D5", "C5",
-      "G5", "F5", "D5", "C5",
+      "G5", "F5", "D5", "C5", 
+      "G6", ["F6", "D6", "C6"],
+      "G5", "F5", ["D5", "C5"],
+      ["E6", "D6", "C6", "G5"],
+      "E6", ["D6", "C6"], "G5",
       "E6", "D6", "C6", "G5",
-      "E6", "D6", "C6", "G5",
-      "E6", "D6", "C6", "G5",
-      "E6", "D6", "C6", "G5",
-  ], "upDown");
+      ["E6", "D6", "C6", "G5"],
+  ], "16n");
     patternThree.loop = true;
-    patternThree.interval = "32n";
+    patternThree.interval = "64n";
 
     function playSequenceThree(){
       Tone.Transport.start();
       patternThree.start(0);
     }
+
+  // Pattern 4
+var  patternFour = new Tone.Pattern(function(time, note){
+  synthFour.triggerAttackRelease(note, "2n");
+    }, ["C3", "D3", "F3", "G3", "C4", "D4", "F4", "G4"], "upDown");
+    patternFour.loop = true;
+    patternFour.interval = "16n";
+
+    function playSequenceFour(){
+      Tone.Transport.start();
+      patternFour.start(0);
+    }
+
+
+// Pattern 5
+var  patternFive = new Tone.Pattern(function(time, note){
+  synthFive.triggerAttackRelease(note, "8n");
+    }, ["C5", "G4", "B3", "E2", "A2"], "downUp");
+    patternFive.loop = true;
+    patternFive.interval = "8n";
+
+    function playSequenceFive(){
+      Tone.Transport.start();
+      patternFive.start(0);
+    }
+
   
 // Play note function
   function playNote(note) {
@@ -248,15 +336,16 @@ var  patternThree = new Tone.Pattern(function(time, note){
     <div className="App">
       <h1>Schema47</h1>
       <div className="note-wrapper">
-        <button className="note" onClick={() => playSequence()}>
-          1
+        <button className="note" onClick={() => {
+          playSequence(); 
+          playSequenceTwo();
+          playSequenceThree();
+          playSequenceFour();
+          playSequenceFive();
+          }}>
+          play
         </button>
-        <button className="note" onClick={() => playSequenceTwo()}>
-          2
-        </button>
-        <button className="note" onClick={() => playSequenceThree()}>
-          3
-        </button>
+       
        
 
       </div>
