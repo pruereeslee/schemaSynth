@@ -277,7 +277,7 @@ var  patternTwo = new Tone.Pattern(function(time, note){
 
 // Pattern 3
 var  patternThree = new Tone.Sequence(function(time, note){
-  synthThree.triggerAttackRelease(note, "128n");
+  synthThree.triggerAttackRelease(note, "200n");
     }, [
       "C7", "B6", "G6", "F6",
       ["C7", "B6", "G6", "F6"],
@@ -293,7 +293,7 @@ var  patternThree = new Tone.Sequence(function(time, note){
       ["E6", "D6", "C6", "G5"],
   ], "16n");
     patternThree.loop = true;
-    patternThree.interval = "64n";
+    patternThree.interval = "128n";
 
     function playSequenceThree(){
       Tone.Transport.start();
@@ -327,6 +327,7 @@ var  patternFive = new Tone.Pattern(function(time, note){
 
   
 // Play note function
+// eslint-disable-next-line
   function playNote(note) {
     synth.triggerAttackRelease(`${note}`, "8n");
   }
