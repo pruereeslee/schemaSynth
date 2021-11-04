@@ -335,7 +335,7 @@ var  patternFive = new Tone.Pattern(function(time, note){
 
   return (
     <div className="App">
-      <h1>Schema47</h1>
+      <h1>schemaSynth</h1>
       <div className="note-wrapper">
         <button className="note" onClick={() => {
           Tone.start();
