@@ -338,6 +338,7 @@ var  patternFive = new Tone.Pattern(function(time, note){
       <h1>Schema47</h1>
       <div className="note-wrapper">
         <button className="note" onClick={() => {
+          Tone.start();
           playSequence(); 
           playSequenceTwo();
           playSequenceThree();
