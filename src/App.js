@@ -9,8 +9,13 @@ Tone.Transport.bpm.value = 20;
 
 // Effects
 const pingPong = new Tone.PingPongDelay("64n", .03).toDestination();
+const pingPongBig = new Tone.PingPongDelay("16n", .5).toDestination();
+
 const reverb = new Tone.Freeverb(.9, .5, 0.5).toDestination();
+
 const tremolo = new Tone.Tremolo(9, 0.02).toDestination().start(1);
+const tremoloDeep = new Tone.Tremolo(12, 0.9).toDestination().start(1);
+
 const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
 
 
@@ -46,8 +51,8 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
     envelope: {
       attack: .9,
       decay: 1,
-      sustain: 0.9,
-      release: 40
+      sustain: 2,
+      release: 70
     },
     filterEnvelope: {
       attack: 0.06,
@@ -60,133 +65,32 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
     }
   }).chain(reverb).toDestination();
 
-  // Synth Sound 3
-  const synthThree = new Tone.PolySynth({
-    "volume": -45,
-    "detune": 10,
-    "portamento": 10,
-    "envelope": {
-      "attack": 0.005,
-      "attackCurve": "linear",
-      "decay": 0.01,
-      "decayCurve": "exponential",
-      "release": .5,
-      "releaseCurve": "exponential",
-      "sustain": 0.01
+  // Synth Sound 1
+  const synthThree = new Tone.MonoSynth({
+    volume: -30,
+    oscillator: {
+      type: 'sine'
     },
-    "oscillator": {
-      "partialCount": 101,
-      "partials": [
-        0.8105694691387023,
-        0,
-        -0.0900632743487447,
-        0,
-        0.03242277876554809,
-        0,
-        -0.016542234064055146,
-        0,
-        0.010007030483193857,
-        0,
-        -0.00669892123255126,
-        0,
-        0.004796269048158,
-        0,
-        -0.0036025309739497885,
-        0,
-        0.0028047386475387615,
-        0,
-        -0.002245344789857901,
-        0,
-        0.0018380260071172384,
-        0,
-        -0.0015322674274833694,
-        0,
-        0.0012969111506219236,
-        0,
-        -0.0011118922759104286,
-        0,
-        0.0009638162534348421,
-        0,
-        -0.0008434645880735718,
-        0,
-        0.0007443245813945843,
-        0,
-        -0.000661689362562206,
-        0,
-        0.0005920887283701257,
-        0,
-        -0.0005329187831286668,
-        0,
-        0.00048219480615032865,
-        0,
-        -0.00043838262257366267,
-        0,
-        0.00040028121932775414,
-        0,
-        -0.0003669395514435048,
-        0,
-        0.0003375966135521459,
-        0,
-        -0.0003116376275043069,
-        0,
-        0.0002885615767670709,
-        0,
-        -0.0002679568493020503,
-        0,
-        0.0002494827544286557,
-        0,
-        -0.00023285534879020466,
-        0,
-        0.0002178364603973938,
-        0,
-        -0.0002042251119019154,
-        0,
-        0.0001918507619263201,
-        0,
-        -0.00018056793698790425,
-        0,
-        0.000170251936387041,
-        0,
-        -0.00016079537177915142,
-        0,
-        0.00015210536106937555,
-        0,
-        -0.00014410123895799155,
-        0,
-        0.0001367126782153318,
-        0,
-        -0.00012987813958319216,
-        0,
-        0.00012354358621226983,
-        0,
-        -0.00011766141227154916,
-        0,
-        0.00011218954590155046,
-        0,
-        -0.00010709069482609357,
-        0,
-        0.00010233170927139278,
-        0,
-        -0.00009788304179914288,
-        0,
-        0.00009371828756373018,
-        0,
-        -0.00008981379159431603,
-        0,
-        0.00008614831216268492,
-        0,
-        -0.00008270273126606491,
-        0,
-        0.0000794598048366535
-      ],
-      "phase": 29.999999999999996,
-      "type": "triangle101"
+    envelope: {
+      attack: .9,
+      decay: 1,
+      sustain: 0.5,
+      release: 30
+    },
+    filterEnvelope: {
+      attack: 0.06,
+      decay: 0.2,
+      sustain: 0.5,
+      release: 2,
+      baseFrequency: 200,
+      octaves: 7,
+      exponent: 1.2
     }
-  }).chain(pingPong, chorus, reverb).toDestination();
+  }).chain(tremoloDeep, pingPongBig, reverb).toDestination();
 
 // Synth Sound 4
 const synthFour = new Tone.AMSynth({
-	"volume": -20,
+	"volume": -25,
 	"detune": 20,
 	"portamento": 0,
 	"harmonicity": 1,
@@ -201,7 +105,7 @@ const synthFour = new Tone.AMSynth({
 		"attackCurve": "linear",
 		"decay": 0.2,
 		"decayCurve": "exponential",
-		"release": 1,
+		"release": 10,
 		"releaseCurve": "exponential",
 		"sustain": 0.2
 	},
@@ -277,23 +181,23 @@ var  patternTwo = new Tone.Pattern(function(time, note){
 
 // Pattern 3
 var  patternThree = new Tone.Sequence(function(time, note){
-  synthThree.triggerAttackRelease(note, "200n");
-    }, [
-      "C7", "B6", "G6", "F6",
-      ["C7", "B6", "G6", "F6"],
-      "C6", "B5", "G5", "F5",
-      "C7", ["B6", "G6"], "F6",
-      "G5", "F5", "D5", "C5",
-      "G5", "F5", "D5", "C5", 
-      "G6", ["F6", "D6", "C6"],
-      "G5", "F5", ["D5", "C5"],
-      ["E6", "D6", "C6", "G5"],
-      "E6", ["D6", "C6"], "G5",
-      "E6", "D6", "C6", "G5",
-      ["E6", "D6", "C6", "G5"],
-  ], "16n");
+  synthThree.triggerAttackRelease(note, "2n");
+    }, 
+    ["C6", "B5", "G5", "F5",
+    ["C6", "B5", "G5", "F5"],
+    "C5", "B4", "G4", "F4",
+    "C6", ["B5", "G5"], "F5",
+    "G4", "F4", "D4", "C4",
+    "G4", "F4", "D4", "C4", 
+    "G5", ["F5", "D5", "C5"],
+    "G4", "F4", ["D4", "C4"],
+    ["E5", "D5", "C5", "G4"],
+    "E5", ["D5", "C5"], "G4",
+    "E5", "D5", "C5", "G4",
+    ["E5", "D5", "C5", "G4"],
+    ], "16n");
     patternThree.loop = true;
-    patternThree.interval = "128n";
+    patternThree.interval = "27n";
 
     function playSequenceThree(){
       Tone.Transport.start();
@@ -305,7 +209,7 @@ var  patternFour = new Tone.Pattern(function(time, note){
   synthFour.triggerAttackRelease(note, "2n");
     }, ["C3", "D3", "F3", "G3", "C4", "D4", "F4", "G4"], "upDown");
     patternFour.loop = true;
-    patternFour.interval = "16n";
+    patternFour.interval = "8n";
 
     function playSequenceFour(){
       Tone.Transport.start();
