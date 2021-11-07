@@ -5,7 +5,7 @@ import * as Tone from "tone";
 export default function App() {
 
 // Variables
-var lightSpectrum = 2;
+var lightSpectrum = 20;
 var pressure = 19;
 var temperature = 23;
 
@@ -168,7 +168,7 @@ var  pattern = new Tone.Pattern(function(time, note){
     "C4", "D4", "F4", "G4", "B4",
     "C4", "D4", "F4", "G4", "B4",
     "F4", "G4", "B4", "C4", "D4",
-    "F4", "G4", "B4", "C4", "D4"], "upDown");
+    "F4", "G4", "B4", "C4", "D4"], "random");
   pattern.loop = true;
   pattern.interval = "4n";
 
@@ -180,7 +180,7 @@ function playSequence(){
 // Pattern 2
 var  patternTwo = new Tone.Pattern(function(time, note){
   synthTwo.triggerAttackRelease(note, "1n");
-    }, [["C2", "E1"], "D2", "E2", "A2"], "downUp");
+    }, [["C2", "E1"], "D2", "E2", "A2"], "alternateUp");
     patternTwo.loop = true;
     patternTwo.interval = "1n";
 
