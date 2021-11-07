@@ -4,11 +4,23 @@ import * as Tone from "tone";
 
 export default function App() {
 
+// Variables
+var lightSpectrum = 2;
+var pressure = 19;
+var temperature = 23;
+
+// var lightIntensity = 3;
+// var soundLevels = 3;
+// var humidity = 3;
+
 // Set the BPM
-Tone.Transport.bpm.value = 20;
+Tone.Transport.bpm.value = temperature;
 
 // Effects
-const pingPong = new Tone.PingPongDelay("64n", .03).toDestination();
+const pingPong = new Tone.PingPongDelay(
+  (pressure <= 20) ? "4n" : "1n", 
+  (pressure <= 20) ? ".1" : ".9").toDestination();
+
 const pingPongBig = new Tone.PingPongDelay("16n", .5).toDestination();
 
 const reverb = new Tone.Freeverb(.9, .5, 0.5).toDestination();
@@ -18,18 +30,16 @@ const tremoloDeep = new Tone.Tremolo(12, 0.9).toDestination().start(1);
 
 const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
 
-
 // Synth Sound 1
   const synth = new Tone.MonoSynth({
-    volume: -25,
-    oscillator: {
-      type: 'sine'
+    volume: -40,
+    oscillator: { type: (lightSpectrum >= 20) ? "sine" : "sawtooth"
     },
     envelope: {
-      attack: .9,
+      attack: 1.9,
       decay: 1,
       sustain: 0.5,
-      release: 10
+      release: 20
     },
     filterEnvelope: {
       attack: 0.06,
@@ -46,7 +56,7 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
   const synthTwo = new Tone.PolySynth({
     volume: -20,
     oscillator: {
-      type: 'square'
+      type: 'sine'
     },
     envelope: {
       attack: .9,
@@ -67,7 +77,7 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
 
   // Synth Sound 1
   const synthThree = new Tone.MonoSynth({
-    volume: -30,
+    volume: -35,
     oscillator: {
       type: 'sine'
     },
@@ -87,6 +97,7 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
       exponent: 1.2
     }
   }).chain(tremoloDeep, pingPongBig, reverb).toDestination();
+
 
 // Synth Sound 4
 const synthFour = new Tone.AMSynth({
@@ -130,7 +141,7 @@ const synthFour = new Tone.AMSynth({
 const synthFive = new Tone.MonoSynth({
   volume: -50,
   oscillator: {
-    type: 'sawtooth'
+    type: 'sine'
   },
   envelope: {
     attack: .9,
@@ -181,35 +192,42 @@ var  patternTwo = new Tone.Pattern(function(time, note){
 
 // Pattern 3
 var  patternThree = new Tone.Sequence(function(time, note){
-  synthThree.triggerAttackRelease(note, "2n");
+  synthThree.triggerAttackRelease(note, "1n");
     }, 
     ["C6", "B5", "G5", "F5",
-    ["C6", "B5", "G5", "F5"],
+    ["E5", "B5", "G5", "F5"],
     "C5", "B4", "G4", "F4",
-    "C6", ["B5", "G5"], "F5",
-    "G4", "F4", "D4", "C4",
+    "C6", [["B5", "G5"]], "F5",
     "G4", "F4", "D4", "C4", 
-    "G5", ["F5", "D5", "C5"],
+    "C4", "C4", "F4", "F4", 
+    "C5", ["D5", "F5", "G5"],
     "G4", "F4", ["D4", "C4"],
     ["E5", "D5", "C5", "G4"],
     "E5", ["D5", "C5"], "G4",
-    "E5", "D5", "C5", "G4",
+    "G5", "C5", "D5", "E4",
     ["E5", "D5", "C5", "G4"],
-    ], "16n");
+    "G4", "F4", ["D4", "C4"],
+    "E5", ["D5", "C5"], "G4",
+    "G4", ["F4", "D4", "C4"], 
+    "E5", ["D5", "C5"], "G4",
+    "G5", ["C5", "D5", "E4"],
+    "C4", "C4", "F4", "F4", 
+    "C5", ["D5", "F5", "G5"],
+    ], "8n");
     patternThree.loop = true;
-    patternThree.interval = "27n";
+    patternThree.interval = "9n";
 
     function playSequenceThree(){
       Tone.Transport.start();
-      patternThree.start(0);
+      patternThree.start("8n");
     }
 
   // Pattern 4
 var  patternFour = new Tone.Pattern(function(time, note){
-  synthFour.triggerAttackRelease(note, "2n");
+  synthFour.triggerAttackRelease(note, "1n");
     }, ["C3", "D3", "F3", "G3", "C4", "D4", "F4", "G4"], "upDown");
     patternFour.loop = true;
-    patternFour.interval = "8n";
+    patternFour.interval = "4n";
 
     function playSequenceFour(){
       Tone.Transport.start();
@@ -244,10 +262,8 @@ var  patternFive = new Tone.Pattern(function(time, note){
         <button className="note" onClick={() => {
           Tone.start();
           playSequence(); 
-          playSequenceTwo();
-          playSequenceThree();
-          playSequenceFour();
-          playSequenceFive();
+          playSequenceTwo(); 
+          playSequenceThree(); 
           }}>
           play
         </button>
