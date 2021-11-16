@@ -99,67 +99,6 @@ const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
   }).chain(tremoloDeep, pingPongBig, reverb).toDestination();
 
 
-// Synth Sound 4
-const synthFour = new Tone.AMSynth({
-	"volume": -25,
-	"detune": 20,
-	"portamento": 0,
-	"harmonicity": 1,
-	"oscillator": {
-		"partialCount": 0,
-		"partials": [],
-		"phase": 0,
-		"type": "sine"
-	},
-	"envelope": {
-		"attack": 0.5,
-		"attackCurve": "linear",
-		"decay": 0.2,
-		"decayCurve": "exponential",
-		"release": 10,
-		"releaseCurve": "exponential",
-		"sustain": 0.2
-	},
-	"modulation": {
-		"partialCount": 0,
-		"partials": [],
-		"phase": 10,
-		"type": "square"
-	},
-	"modulationEnvelope": {
-		"attack": 0.5,
-		"attackCurve": "linear",
-		"decay": 0.01,
-		"decayCurve": "exponential",
-		"release": 0.5,
-		"releaseCurve": "exponential",
-		"sustain": 1
-	}
-}).chain(chorus).toDestination();
-
-// Synth Sound 5
-const synthFive = new Tone.MonoSynth({
-  volume: -50,
-  oscillator: {
-    type: 'sine'
-  },
-  envelope: {
-    attack: .9,
-    decay: 1,
-    sustain: 0.5,
-    release: 10
-  },
-  filterEnvelope: {
-    attack: 0.06,
-    decay: 0.2,
-    sustain: 0.5,
-    release: 2,
-    baseFrequency: 200,
-    octaves: 7,
-    exponent: 1.2
-  }
-}).chain(tremolo, pingPong, reverb).toDestination();
-
 
 // Pattern 1
 var  pattern = new Tone.Pattern(function(time, note){
