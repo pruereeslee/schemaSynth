@@ -221,39 +221,8 @@ var  patternThree = new Tone.Sequence(function(time, note){
       Tone.Transport.start();
       patternThree.start("8n");
     }
-    
-/* 
-  // Pattern 4
-var  patternFour = new Tone.Pattern(function(time, note){
-  synthFour.triggerAttackRelease(note, "1n");
-    }, ["C3", "D3", "F3", "G3", "C4", "D4", "F4", "G4"], "upDown");
-    patternFour.loop = true;
-    patternFour.interval = "4n";
-
-    function playSequenceFour(){
-      Tone.Transport.start();
-      patternFour.start(0);
-    }
 
 
-// Pattern 5
-var  patternFive = new Tone.Pattern(function(time, note){
-  synthFive.triggerAttackRelease(note, "8n");
-    }, ["C5", "G4", "B3", "E2", "A2"], "downUp");
-    patternFive.loop = true;
-    patternFive.interval = "8n";
-
-    function playSequenceFive(){
-      Tone.Transport.start();
-      patternFive.start(0);
-    }
-
-  
-// Play note function
-// eslint-disable-next-line
-  function playNote(note) {
-    synth.triggerAttackRelease(`${note}`, "8n");
-  } */
 
 
   return (
