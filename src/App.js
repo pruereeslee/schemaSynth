@@ -28,8 +28,8 @@ const reverb = new Tone.Freeverb(.9, .5, 0.5).toDestination();
 const tremolo = new Tone.Tremolo(9, 0.02).toDestination().start(1);
 const tremoloDeep = new Tone.Tremolo(12, 0.9).toDestination().start(1);
 
-const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
-
+// const chorus = new Tone.Chorus(4, 2.5, 0.7).toDestination().start();
+ 
 // Synth Sound 1
   const synth = new Tone.MonoSynth({
     volume: -40,
